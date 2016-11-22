@@ -9,7 +9,7 @@ ARG GROUP_UID=994
 
 RUN set -ex \
     && addgroup -S -g $GROUP_UID $GROUP_ID \
-    && adduser -S -D -H -u $USER_UID $USER_ID \
+    && adduser -S -D -H -G $GROUP_ID -u $USER_UID $USER_ID \
     && apk add --no-cache ca-certificates apache2-utils
 
 COPY ./registry/registry /bin/registry
