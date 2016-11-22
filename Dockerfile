@@ -1,8 +1,11 @@
 # Build a minimal distribution container
 
 FROM alpine:3.4
+ARG USER_ID=registry
+ARG USER_UID=995
 
 RUN set -ex \
+    && adduser -S -D -H -u $USER_UID $USER_ID \
     && apk add --no-cache ca-certificates apache2-utils
 
 COPY ./registry/registry /bin/registry
@@ -12,6 +15,7 @@ VOLUME ["/var/lib/registry"]
 EXPOSE 5000
 
 COPY docker-entrypoint.sh /entrypoint.sh
+USER $USER_ID
 ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["/etc/docker/registry/config.yml"]
